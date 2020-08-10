@@ -11,6 +11,7 @@
               <th>Network</th>
               <th>Is Current</th>
               <th>Genres</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -21,7 +22,11 @@
                 <span v-if="show.isCurrent">Yes</span>
                 <span v-else>No</span>
               </td>
-              <td> {{show.genre.join(" / ")}} </td>
+              <td> <span v-for="(g, i) in show.genre" v-bind:key="i">{{g}} </span></td>
+              <td>
+                <button @click.prevent="deleteShow(show.id)" class="red btn-small buttonaction">Delete</button>
+                <button class="green btn-small buttonaction"><router-link id="white" v-bind:to="{ path:`/${show.id}/EditShow` }">Edit</router-link></button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -79,11 +84,11 @@
         <div class="row">
           <div class="input-field col m6 s12">
             <input id="imgurl" type="text" required="required" maxlength="150" class="validate" v-model="add_imageUrl">
-            <label for="imgurl">TV Show image URL (300px * 500px suggested)</label>
+            <label for="imgurl">TV Show image URL ( suggested size: 300px * 500px)</label>
           </div>
           <div class="col m6 s12">
             <br>
-            <button @click="addShow()" class="btn waves-effect waves-light" type="submit" name="action">Add TV show
+            <button @click.prevent="addShow()" class="btn waves-effect waves-light blue" type="submit" name="action">Add TV show
             <i class="material-icons right">add</i>
             </button>
           </div>
@@ -103,7 +108,7 @@ export default {
       tv_shows: [], // to start, the list is empty
       add_title: '',
       add_network: '',
-      add_genres: [],
+      add_genres: '',
       add_seasons: 0,
       add_current: '',
       add_rating: 0,
@@ -122,16 +127,26 @@ export default {
         title: this.add_title,
         network: this.add_network,
         nOfSeasons: parseInt(this.add_seasons),
-        genre: this.add_genres.split(","),
+        genre: this.add_genres.split(','),
         isCurrent: this.add_current == 'yes' ? true : false,
-        imdbRating: this.add_rating,
+        imdbRating: parseInt(this.add_rating),
         imgUrl: this.add_imageUrl
       });
       // reset values
       this.add_title = "";
       this.add_network = "";
-      this.add_genres = [];
+      this.add_genres = '';
       this.add_seasons = 0;
+      this.add_imageUrl = '';
+
+    },
+    deleteShow(showId){
+      console.log(showId);
+      const respuesta = confirm('Are you sure you want to delete this program?');
+      if(respuesta == false){
+        return;
+      }
+      db.collection("tv_shows").doc(showId).delete();
 
     }
   }
@@ -163,5 +178,11 @@ a {
   display: inline-block;
 }
 
+.buttonaction{
+  margin-right: 5px;
+}
 
+#white{
+  color: aliceblue;
+}
 </style>

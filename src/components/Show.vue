@@ -14,10 +14,12 @@
         <ul class="collection">
           <li class="collection-item">Network: {{network}}</li>
           <li class="collection-item">Seasons: {{seasons}}</li>
-          <li class="collection-item">Genres: {{genre.join(" / ")}}</li>
+          <li class="collection-item">Genres: <span v-for="(g, i) in genre" v-bind:key="i">{{g}} </span></li>
           <li class="collection-item">Is Current:<span v-if="current"> Yes</span><span v-else> No</span></li>
           <li class="collection-item">IMDB Rating: {{rating}}</li>
         </ul>
+        <br>
+        <br>
         <h5><router-link v-bind:to="{ name: 'TvShows' }">Back to Shows</router-link></h5>
       </div>
     </div> 

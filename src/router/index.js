@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 
 import TvShows from '../components/TvShows'; 
 import Show from '../components/Show'; 
+import EditShow from '../components/EditShow'; 
 import NotFound from '../components/NotFound'; 
 
 Vue.use(VueRouter);   
@@ -20,6 +21,14 @@ export default new VueRouter({
             component: Show,
             name: "Show"
         },
+
+        {
+            path: '/:id/editshow', 
+            component: EditShow,
+            name: "EditShow"
+        },
+
+
 
         {
             path: '*',
